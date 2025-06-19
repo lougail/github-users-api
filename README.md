@@ -255,7 +255,7 @@ Settings recommandés :
 *Interface interactive permettant de tester l'API directement depuis le navigateur*
 
 ### Exemple de Réponse API
-![Réponse API](docs/images/api-reponse.png)
+![Réponse API](docs/images/api-reponse.PNG)
 *Exemple de réponse JSON pour la requête GET /users/*
 
 ### Structure des Données
