@@ -12,18 +12,22 @@
 
 1. [Quick Start](#-quick-start)
 2. [Installation Détaillée](#-installation-détaillée)
-3. [Documentation API](#-documentation-api)
-4. [Sécurité](#-sécurité)
-5. [Architecture](#️-architecture)
-6. [Performance](#-performance)
-7. [Guide de Dépannage](#-guide-de-dépannage)
-8. [Contribution](#-contribution)
+3. [Extraction des Données](#-extraction-des-données)
+4. [Structure des Données](#-structure-des-données)
+5. [Critères de Filtrage](#-critères-de-filtrage)
+6. [Documentation API](#-documentation-api)
+7. [Sécurité](#-sécurité)
+8. [Architecture](#️-architecture)
+9. [Performance](#-performance)
+10. [Guide de Dépannage](#-guide-de-dépannage)
+11. [Contribution](#-contribution)
+12. [License](#-license)
 
 ## ⚡ Quick Start
 
 ```bash
 # Cloner le projet
-git clone <nom-repo>
+git clone <votre-repo>
 cd github-users-api
 
 # Installer les dépendances
@@ -34,6 +38,10 @@ pip install -r requirements.txt
 # Configurer l'environnement
 copy .env.example .env
 # Ajouter votre token GitHub dans .env
+
+# Extraire et filtrer les données
+python extract_users.py
+python filtered_users.py
 
 # Lancer l'API
 uvicorn api.main:app --reload
@@ -59,6 +67,58 @@ uvicorn api.main:app --reload
 1. Créer l'environnement virtuel
 2. Installer les dépendances
 3. Configurer le fichier `.env`
+
+## 📥 Extraction des Données
+
+### Étape 1 : Extraction initiale
+```bash
+# Configuration du token dans .env
+GITHUB_TOKEN=votre_token_github
+
+# Lancer l'extraction
+python extract_users.py
+```
+
+### Étape 2 : Filtrage
+```bash
+python filtered_users.py
+```
+
+### Métriques d'extraction
+- Batch size : 100 utilisateurs/requête
+- Délai entre requêtes : 1 seconde
+- Limite : 3000 utilisateurs maximum
+
+## 📊 Structure des Données
+
+### Format utilisateur
+```json
+{
+    "login": "string",      // Nom d'utilisateur GitHub
+    "id": "integer",        // ID unique
+    "created_at": "string", // Format ISO 8601
+    "avatar_url": "string", // URL de l'avatar
+    "bio": "string"         // Biographie
+}
+```
+
+### Stockage
+- Données brutes : `data/users.json`
+- Données filtrées : `data/filtered_users.json`
+
+## 🎯 Critères de Filtrage
+
+| Critère | Description |
+|---------|-------------|
+| Date de création | Comptes créés après 01/01/2000 |
+| Bio | Doit être non vide |
+| Avatar | Doit avoir une URL valide |
+| Doublons | Suppression basée sur l'ID |
+
+### Processus de filtrage
+1. Extraction depuis l'API GitHub (`extract_users.py`)
+2. Application des filtres (`filtered_users.py`)
+3. Stockage dans `data/filtered_users.json`
 
 ## 📖 Documentation API
 
@@ -109,6 +169,8 @@ api/
 - Extraction optimisée : 100 utilisateurs par requête
 - Mise en cache des données filtrées
 - Temps de réponse API < 100ms
+- Gestion du rate limiting GitHub
+- Délai automatique entre requêtes
 
 ## 🔧 Guide de Dépannage
 
