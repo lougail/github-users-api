@@ -3,15 +3,3 @@ uvicorn[standard]==0.22.0
 pydantic==1.10.11
 requests==2.31.0
 python-dotenv==1.0.0
-
-## 🔒 Sécurité & Authentification
-
-**Basic Auth**
-- Username: `admin`
-- Password: `admin123`
-
-**Headers générés automatiquement**
-```http
-Authorization: Basic YWRtaW46YWRtaW4xMjM=  # admin:admin123 encodé en Base64
-Accept: application/json
-```

@@ -8,26 +8,23 @@
 
 > API REST donnant accès à une base de données filtrée d'utilisateurs GitHub, avec fonctionnalités de recherche et d'authentification.
 
-## 📑 Table des Matières (mise à jour)
+## 📑 Table des Matières
 
 1. [Quick Start](#-quick-start)
 2. [Installation Détaillée](#-installation-détaillée)
 3. [Documentation API](#-documentation-api)
-4. [Fonctionnalités](#-fonctionnalités)
-5. [Sécurité](#-sécurité)
-6. [Guide de Dépannage](#-guide-de-dépannage)
-7. [Architecture](#️-architecture)
-8. [Performance et Limitations](#-performance-et-limitations)
-9. [Contribution](#-contribution)
-10. [Support et Contact](#-support-et-contact)
+4. [Sécurité](#-sécurité)
+5. [Architecture](#️-architecture)
+6. [Performance](#-performance)
+7. [Guide de Dépannage](#-guide-de-dépannage)
+8. [Contribution](#-contribution)
 
 ## ⚡ Quick Start
 
-1. **Configuration**
 ```bash
 # Cloner le projet
-git clone <nom-repo>
-cd <votre-dossier>
+git clone <votre-repo>
+cd github-users-api
 
 # Installer les dépendances
 python -m venv venv
@@ -37,44 +34,31 @@ pip install -r requirements.txt
 # Configurer l'environnement
 copy .env.example .env
 # Ajouter votre token GitHub dans .env
-```
 
-2. **Extraction des données**
-```bash
-# Extraire les données brutes
-python extract_users.py
-
-# Filtrer les données
-python filtered_users.py
-```
-
-3. **Lancer l'API**
-```bash
+# Lancer l'API
 uvicorn api.main:app --reload
 ```
 
+## 📸 Captures d'écran
+
+### Interface de Documentation (Swagger UI)
+![Interface Swagger](docs/images/swagger-ui.png)
+
+### Exemple de Réponse API
+![Réponse API](docs/images/api-response.png)
+
 ## 💿 Installation Détaillée
 
-1. **Vérifier Python**
-```bash
-python --version  # Doit afficher Python 3.8+
-```
+### Prérequis
+- Python 3.8+
+- Token GitHub avec permissions `read:user`
+- ~5Go d'espace disque
+- Connexion Internet stable
 
-2. **Obtenir un token GitHub**
-   - Aller sur [GitHub Settings/Developer settings](https://github.com/settings/tokens)
-   - Générer un nouveau token
-   - Cocher les permissions nécessaires
-   - Copier le token
-
-3. **Configurer le projet**
-```bash
-# Structure des dossiers
-mkdir data
-touch .env
-
-# Contenu du .env
-echo "GITHUB_TOKEN=votre_token_ici" > .env
-```
+### Configuration
+1. Créer l'environnement virtuel
+2. Installer les dépendances
+3. Configurer le fichier `.env`
 
 ## 📖 Documentation API
 
@@ -86,87 +70,30 @@ echo "GITHUB_TOKEN=votre_token_ici" > .env
 | GET | `/users/{login}` | Détails d'un utilisateur |
 | GET | `/users/search?q={terme}` | Recherche d'utilisateurs |
 
-### Exemples de Requêtes
-
-**Liste des utilisateurs**
-```bash
-curl -X GET "http://127.0.0.1:8000/users/" -u admin:admin
-```
-
-**Recherche d'utilisateurs**
-```bash
-curl -X GET "http://127.0.0.1:8000/users/search?q=python" -u admin:admin
-```
-
-## 📝 Exemples de Réponses
-
-### GET /users/
+### Exemple de Réponse
 ```json
 {
-    "login": "torvalds",
-    "id": 1024025,
+    "login": "pythondev",
+    "id": 123456,
     "created_at": "2011-09-03T15:26:22Z",
-    "avatar_url": "https://avatars.githubusercontent.com/u/1024025?v=4",
-    "bio": "Creator of Linux and Git"
+    "avatar_url": "https://avatars.githubusercontent.com/u/123456?v=4",
+    "bio": "Python developer and open source contributor"
 }
 ```
 
-### GET /users/search?q=linux
-```json
-[
-    {
-        "login": "torvalds",
-        "id": 1024025,
-        "created_at": "2011-09-03T15:26:22Z",
-        "avatar_url": "https://avatars.githubusercontent.com/u/1024025?v=4",
-        "bio": "Creator of Linux and Git"
-    }
-]
-```
+## 🔒 Sécurité
 
-## 🔒 Sécurité & Authentification
+### Authentification
+- Type : Basic Auth
+- Username : `admin`
+- Password : `admin123`
 
-**Basic Auth**
-- Username: `admin`
-- Password: `admin123`
-
-**Headers générés automatiquement**
-```http
-Authorization: Basic YWRtaW46YWRtaW4xMjM=  # admin:admin123 encodé en Base64
-Accept: application/json
-```
-
-## 🚀 Fonctionnalités
-
-- ✨ Liste filtrée d'utilisateurs GitHub
-- 🔍 Recherche par login et bio
-- 👤 Détails des profils utilisateurs
-- 🔒 Authentification Basic Auth
-- 📚 Documentation Swagger/ReDoc
-
-## 🔧 Guide de Dépannage
-
-### Problèmes courants
-
-1. **Erreur d'authentification**
+### Exemple de Requête
 ```bash
-{"detail": "Not authenticated"}
+curl -X GET "http://127.0.0.1:8000/users/" -u admin:admin123 -H "Accept: application/json"
 ```
-➡️ Solution : Vérifier les credentials (admin/admin)
 
-2. **Rate Limiting GitHub**
-```bash
-{"message": "API rate limit exceeded"}
-```
-➡️ Solution : Attendre que la limite se réinitialise ou utiliser un nouveau token
-
-3. **Données non disponibles**
-```bash
-{"detail": "User {id} not found"}
-```
-➡️ Solution : Relancer l'extraction des données avec `extract_users.py`
-
-## ⚙️ Architecture & Technique
+## ⚙️ Architecture
 
 ```
 api/
@@ -177,127 +104,36 @@ api/
 └── security.py      # Authentification
 ```
 
-## 📊 Performance et Limitations
+## 📊 Performance
 
-### Temps de traitement moyens
-- Extraction initiale : ~30 min pour 3000 utilisateurs
-- Filtrage des données : ~5 sec
-- Réponse API : <100ms
+- Extraction optimisée : 100 utilisateurs par requête
+- Mise en cache des données filtrées
+- Temps de réponse API < 100ms
 
-### Utilisation des ressources
-- RAM : ~500MB
-- Stockage : ~5GB (données brutes + filtrées)
-- CPU : Modéré pendant l'extraction
+## 🔧 Guide de Dépannage
 
-### Limitations
-- Maximum 3000 utilisateurs
-- Pas de pagination
-- Recherche : minimum 3 caractères
-- Rate limiting GitHub API
+### Erreurs Communes
 
-## 📝 TODO
+1. **Authentification échouée**
+```json
+{"detail": "Authentification échouée"}
+```
+➡️ Solution : Vérifier les credentials (admin/admin123)
 
-- [ ] Ajouter la pagination
-- [ ] Implémenter un cache Redis
-- [ ] Ajouter des tests unitaires
-- [ ] Documenter les codes d'erreur
+2. **Rate Limiting**
+```json
+{"message": "API rate limit exceeded"}
+```
+➡️ Solution : Attendre ou utiliser un nouveau token
 
 ## 🤝 Contribution
 
-1. **Installation pour développement**
-```bash
-# Créer une branche
-git checkout -b feature/ma-fonctionnalite
-
-# Installer les dépendances de développement
-pip install -r requirements-dev.txt
-```
-
-2. **Tests**
-```bash
-# Lancer les tests
-pytest tests/
-
-# Vérifier la couverture
-pytest --cov=api tests/
-```
-
-3. **Soumission**
-   - Créer une Pull Request
-   - Décrire les changements
-   - Ajouter des tests
+1. Fork le projet
+2. Créer une branche (`git checkout -b feature/amelioration`)
+3. Commit (`git commit -am 'Ajout fonctionnalité'`)
+4. Push (`git push origin feature/amelioration`)
+5. Créer une Pull Request
 
 ## 📄 License
 
 MIT License - voir [LICENSE](LICENSE)
-
-## 🛠️ Environnement de Développement
-
-### VS Code
-
-Extensions recommandées :
-- Python
-- FastAPI
-- Thunder Client
-- Git Graph
-
-Settings recommandés :
-```json
-{
-    "python.linting.enabled": true,
-    "python.formatting.provider": "black",
-    "editor.formatOnSave": true
-}
-```
-
-## 📸 Captures d'écran
-
-### Interface de Documentation (Swagger UI)
-![Interface Swagger](docs/images/swagger-ui.png)
-*Interface interactive permettant de tester l'API directement depuis le navigateur*
-
-### Exemple de Réponse API
-![Réponse API](docs/images/api-reponse.png)
-*Exemple de réponse JSON pour la requête GET /users/*
-
-### Structure des Données
-```json
-{
-    "login": "torvalds",
-    "id": 1024025,
-    "created_at": "2011-09-03T15:26:22Z",
-    "avatar_url": "https://avatars.githubusercontent.com/u/1024025?v=4",
-    "bio": "Creator of Linux and Git"
-}
-```
-*Structure type d'un objet utilisateur*
-
-## 🔄 Versions et Compatibilité
-
-### Dépendances principales
-| Package | Version | Usage |
-|---------|---------|-------|
-| FastAPI | ^0.68.0 | Framework API |
-| Pydantic | ^1.8.0 | Validation des données |
-| Uvicorn | ^0.15.0 | Serveur ASGI |
-| Requests | ^2.26.0 | Client HTTP |
-| python-dotenv | ^0.19.0 | Gestion configuration |
-
-### Systèmes d'exploitation supportés
-- Windows 10/11
-- Linux (Ubuntu 20.04+)
-- macOS (10.15+)
-
-## 📫 Contact et Support
-
-Pour toute question ou problème :
-- Ouvrir une issue
-- Me contacter sur [LinkedIn](votre-profil)
-- Email : votre@email.com
-
-## 📝 Changelog
-
-### v1.0.0 (2024-01-19)
-- Version initiale
-- Authentification Basic Auth
-- Endpoints de base
