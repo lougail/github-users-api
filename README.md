@@ -28,7 +28,7 @@
 
 ```bash
 # Cloner le projet
-git clone <votre-repo>
+git clone https://github.com/lougail/github-users-api.git
 cd github-users-api
 
 # Installer les dépendances
@@ -121,6 +121,8 @@ python filtered_users.py
 | Bio | Doit être non vide |
 | Avatar | Doit avoir une URL valide |
 | Doublons | Suppression basée sur l'ID |
+
+> Pour plus de détails sur l'implémentation, voir [Description des Scripts](#-description-des-scripts).
 
 ## 📖 Documentation API
 
