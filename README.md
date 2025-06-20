@@ -22,6 +22,7 @@
 10. [Guide de Dépannage](#-guide-de-dépannage)
 11. [Contribution](#-contribution)
 12. [License](#-license)
+13. [Description des Scripts](#-description-des-scripts)
 
 ## ⚡ Quick Start
 
@@ -84,6 +85,12 @@ python extract_users.py
 python filtered_users.py
 ```
 
+### Processus complet
+1. Configuration du token GitHub
+2. Extraction des données brutes
+3. Application des filtres
+4. Stockage des résultats
+
 ### Métriques d'extraction
 - Batch size : 100 utilisateurs/requête
 - Délai entre requêtes : 1 seconde
@@ -114,11 +121,6 @@ python filtered_users.py
 | Bio | Doit être non vide |
 | Avatar | Doit avoir une URL valide |
 | Doublons | Suppression basée sur l'ID |
-
-### Processus de filtrage
-1. Extraction depuis l'API GitHub (`extract_users.py`)
-2. Application des filtres (`filtered_users.py`)
-3. Stockage dans `data/filtered_users.json`
 
 ## 📖 Documentation API
 
@@ -163,6 +165,82 @@ api/
 ├── routes.py        # Endpoints
 └── security.py      # Authentification
 ```
+
+## 📝 Description des Scripts
+
+### Scripts Principaux
+
+1. **extract_users.py**
+```python
+"""
+Script d'extraction des données GitHub.
+- Utilise l'API GitHub pour récupérer les utilisateurs
+- Gère le rate limiting et la pagination
+- Sauvegarde les données brutes dans data/users.json
+"""
+```
+
+2. **filtered_users.py**
+```python
+"""
+Script de filtrage des données.
+- Applique les critères de filtrage (date, bio, avatar)
+- Supprime les doublons
+- Sauvegarde les données filtrées dans data/filtered_users.json
+"""
+```
+
+### Modules API
+
+1. **api/main.py**
+```python
+"""
+Point d'entrée de l'API FastAPI.
+- Configure l'application FastAPI
+- Gère les middlewares et les routes
+- Configure la documentation Swagger
+"""
+```
+
+2. **api/models.py**
+```python
+"""
+Modèles de données Pydantic.
+- Définit la structure des données utilisateur
+- Gère la validation des données
+"""
+```
+
+3. **api/routes.py**
+```python
+"""
+Configuration des routes de l'API.
+- Implémente les endpoints GET /users/
+- Gère la recherche et le filtrage
+- Retourne les réponses JSON
+"""
+```
+
+4. **api/security.py**
+```python
+"""
+Gestion de la sécurité.
+- Implémente l'authentification Basic Auth
+- Protège les routes de l'API
+"""
+```
+
+### Workflow d'exécution
+1. Configuration initiale (.env)
+2. Extraction (extract_users.py)
+3. Filtrage (filtered_users.py)
+4. Démarrage API (uvicorn)
+
+### Fichiers de Configuration
+
+- **requirements.txt** : Liste des dépendances Python
+- **.env** : Variables d'environnement (token GitHub)
+- **.gitignore** : Fichiers à ignorer dans Git
 
 ## 📊 Performance
 
