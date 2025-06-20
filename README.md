@@ -3,6 +3,8 @@
 ![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.68+-green.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+![Coverage](https://img.shields.io/badge/coverage-80%25-brightgreen.svg)
+![GitHub last commit](https://img.shields.io/github/last-commit/lougail/github-users-api)
 
 > API REST donnant accès à une base de données filtrée d'utilisateurs GitHub, avec fonctionnalités de recherche et d'authentification.
 
@@ -24,7 +26,7 @@
 1. **Configuration**
 ```bash
 # Cloner le projet
-git clone <votre-repo>
+git clone <nom-repo>
 cd <votre-dossier>
 
 # Installer les dépendances
@@ -126,11 +128,11 @@ curl -X GET "http://127.0.0.1:8000/users/search?q=python" -u admin:admin
 
 **Basic Auth**
 - Username: `admin`
-- Password: `admin`
+- Password: `admin123`
 
-**Headers requis**
+**Headers générés automatiquement**
 ```http
-Authorization: Basic YWRtaW46YWRtaW4=
+Authorization: Basic YWRtaW46YWRtaW4xMjM=  # admin:admin123 encodé en Base64
 Accept: application/json
 ```
 
@@ -285,12 +287,6 @@ Settings recommandés :
 - Windows 10/11
 - Linux (Ubuntu 20.04+)
 - macOS (10.15+)
-
-2. **Badge supplémentaires** :
-```markdown
-![Coverage](https://img.shields.io/badge/coverage-80%25-brightgreen.svg)
-![GitHub last commit](https://img.shields.io/github/last-commit/your-username/your-repo)
-```
 
 ## 📫 Contact et Support
 
