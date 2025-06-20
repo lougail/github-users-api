@@ -23,7 +23,7 @@
 
 ```bash
 # Cloner le projet
-git clone <votre-repo>
+git clone <nom-repo>
 cd github-users-api
 
 # Installer les dépendances
