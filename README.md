@@ -12,17 +12,17 @@
 
 1. [Quick Start](#-quick-start)
 2. [Installation Détaillée](#-installation-détaillée)
-3. [Extraction des Données](#-extraction-des-données)
-4. [Structure des Données](#-structure-des-données)
-5. [Critères de Filtrage](#-critères-de-filtrage)
-6. [Documentation API](#-documentation-api)
-7. [Sécurité](#-sécurité)
-8. [Architecture](#️-architecture)
-9. [Performance](#-performance)
-10. [Guide de Dépannage](#-guide-de-dépannage)
-11. [Contribution](#-contribution)
-12. [License](#-license)
-13. [Description des Scripts](#-description-des-scripts)
+3. [Architecture](#️-architecture)
+4. [Description des Scripts](#-description-des-scripts)
+5. [Extraction des Données](#-extraction-des-données)
+6. [Structure des Données](#-structure-des-données)
+7. [Critères de Filtrage](#-critères-de-filtrage)
+8. [Documentation API](#-documentation-api)
+9. [Sécurité](#-sécurité)
+10. [Performance](#-performance)
+11. [Guide de Dépannage](#-guide-de-dépannage)
+12. [Contribution](#-contribution)
+13. [License](#-license)
 
 ## ⚡ Quick Start
 
